@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserData extends DateAudit{
+public class UserData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

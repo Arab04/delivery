@@ -8,18 +8,27 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.startup.delivery.modul.Order;
 import com.startup.delivery.modul.UserData;
+import com.startup.delivery.reprository.UserDataReprository;
+
+import lombok.NoArgsConstructor;
 
 @Component
+@NoArgsConstructor
 public class ResponseMethods extends Send{
+	
+	private UserData user = new UserData();
+	private Order order = new Order();
+	
+	
+	UserDataReprository repo;
 	
 	public ResponseMethods(AbsSender s) {
 		super(s);
 	}
-
-
-	private UserData user = new UserData();
-	private Order order = new Order();
 	
+	public ResponseMethods (UserDataReprository repo) {
+		this.repo = repo;
+	}
 	
 	public void requestName(Long id) throws TelegramApiException {
 		super.requestName(id);
@@ -30,14 +39,13 @@ public class ResponseMethods extends Send{
 		user.setName(m.getText());
 		super.requestLocation(id);
 		UpdateState.state.put(id, State.REQUEST_PHONE);
-		
 	}
 	
 	public void requestContact(Long id,Message m) throws TelegramApiException {
 		if(m.hasLocation()) {
 			user.setLongitudeFirst(m.getLocation().getLongitude());
 			user.setLatitudeSecond(m.getLocation().getLatitude());
-				
+			
 			super.requestNumber(id);
 			UpdateState.state.put(id, State.MAIN_MENU);
 			}
@@ -54,6 +62,7 @@ public class ResponseMethods extends Send{
 			user.setUserId(m.getContact().getUserID());
 			user.setUserName(m.getChat().getUserName());
 			
+			repo.save(user);
 			super.sendMainMenu(id);
 			UpdateState.state.put(id, State.COMMANDS);
 			}

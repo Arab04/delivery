@@ -9,24 +9,20 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class CallBackQuery extends ResponseMethods{
 	
-	
-	
 	public CallBackQuery(AbsSender s) {
 		super(s);
 	}
 
 	public void callback(Update update) throws TelegramApiException{
-		
 		String call = update.getCallbackQuery().getData();
-		Long id = update.getMessage().getChatId();
-		
+		Long id  = update.getCallbackQuery().getMessage().getChatId();
 		switch (call) {
 		
 		case "name":
 			super.name(id);
 			break;
 			
-		case "changnumber":
+		case "changenumber":
 			super.changeNumber(id);
 			break;
 			
