@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.startup.delivery.hibernate.UniqueInterface;
 
 @Entity
 @Table(name = "user_data")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserData {
+public class UserData implements UniqueInterface{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

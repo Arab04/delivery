@@ -7,27 +7,26 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-public class CallBackQuery extends ResponseMethods{
+public class CallBackQuery {
 	
-	public CallBackQuery(AbsSender s) {
-		super(s);
-	}
+	@Autowired
+	private ResponseMethods methods;
 
-	public void callback(Update update) throws TelegramApiException{
+	public void callback(Update update,AbsSender s) throws TelegramApiException{
 		String call = update.getCallbackQuery().getData();
 		Long id  = update.getCallbackQuery().getMessage().getChatId();
 		switch (call) {
 		
 		case "name":
-			super.name(id);
+			methods.name(id,s);
 			break;
 			
 		case "changenumber":
-			super.changeNumber(id);
+			methods.changeNumber(id,s);
 			break;
 			
 		case "location":
-			super.changeLocation(id);
+			methods.changeLocation(id,s);
 			break;
 		}
 	}

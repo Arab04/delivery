@@ -6,60 +6,58 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-public class UpdateUser extends ResponseMethods{
+public class UpdateUser {
 	
-	public UpdateUser(AbsSender s) {
-		super(s);
-		// TODO Auto-generated constructor stub
-	}
+	@Autowired
+	private ResponseMethods methods;
 
 	
-	public void getInfoUser(Long id,Message m) throws TelegramApiException {
+	public void getInfoUser(Long id,Message m,AbsSender s) throws TelegramApiException {
 		
 		switch (UpdateState.state.get(id)) {
 		
 		case REQUEST_NAME:
-			super.requestName(id);
+			methods.requestName(id,s);
 			break;
 		
 		case REQUEST_LOCATION:
-			super.requestLocation(id, m);
+			methods.requestLocation(id, m,s);
 			break;
 			
 		case REQUEST_PHONE:
-			super.requestContact(id, m);
+			methods.requestContact(id, m,s);
 			break;
 			
 		case MAIN_MENU:
-			super.mainMenu(id, m);
+			methods.mainMenu(id, m,s);
 			break;
 			
 		case COMMANDS:
-			super.commands(id, m);
+			methods.commands(id, m,s);
 			break;
 		
 		case UPDATE_NAME:
-			super.updateName(id, m);
+			methods.updateName(id, m,s);
 			break;
 			
 		case UPDATE_CONTACT:
-			super.updateContact(id, m);
+			methods.updateContact(id, m,s);
 			break;
 			
 		case UPDATE_LOCATION:
-			super.updateLocation(id, m);
+			methods.updateLocation(id, m,s);
 			break;
 			
 		case REQUEST_CUSTOMER_NUMBER:
-			super.requestCustomerLocation(id, m);
+			methods.requestCustomerLocation(id, m,s);
 			break;
 			
 		case REQUEST_CUSTOMER_LOCATION:
-			super.requestOrderList(id, m);
+			methods.requestOrderList(id, m,s);
 			break;
 			
 		case REQUEST_ORDER_LIST:
-			super.finishingOrder(id, m);
+			methods.finishingOrder(id, m,s);
 			break;
 			
 			default:

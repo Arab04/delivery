@@ -1,6 +1,7 @@
 package com.startup.delivery.connection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
@@ -10,12 +11,23 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import com.startup.delivery.config.Config;
+
 @Component
 public class LongPolling extends TelegramLongPollingBot {
 	
-	private UpdateUser user = new UpdateUser(this);
-	private CallBackQuery query = new CallBackQuery(this);
-	private Send send = new Send(this);
+	@Autowired
+	private Config config;
+	
+	@Autowired
+	private UpdateUser user;
+	
+	@Autowired
+	private CallBackQuery query;
+	
+	@Autowired
+	private Send send;
+	
 	
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -36,17 +48,17 @@ public class LongPolling extends TelegramLongPollingBot {
 
 	@Override
 	public String getBotUsername() {
-		return "delivery04_bot";
+		return config.getBotUserName();
 	}
 
 	@Override
 	public String getBotToken() {
-		return "1403141700:AAEJXQAEZV2hyDaldaw_YfjtbURhF20vDZ8";
+		return config.getBotToken();
 	}
 	
 	public void directMessage(Long id,Message m) {
 		try {
-			user.getInfoUser(id, m);
+			user.getInfoUser(id, m,this);
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +66,7 @@ public class LongPolling extends TelegramLongPollingBot {
 	
 	public void callBackQuery(Update update) {
 		try {
-			query.callback(update);
+			query.callback(update,this);
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +74,7 @@ public class LongPolling extends TelegramLongPollingBot {
 	
 	public void getId(Long id) {
 		try {
-			send.greeting(id);
+			send.greeting(id,this);
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
 		}
